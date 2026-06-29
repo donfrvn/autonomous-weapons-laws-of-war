@@ -237,7 +237,7 @@
 
   /* ACCOUNTABILITY */
   .gap-chain {
-    display: flex; gap: 12px; align-items: center;
+    display: flex; gap: 12px; align-items: stretch;
     margin-top: 40px; flex-wrap: wrap;
   }
   .actor {
@@ -247,11 +247,142 @@
     text-align: center;
     border: 1px solid var(--line);
     font-size: 13px;
+    position: relative;
   }
   .actor strong { display: block; color: var(--accent); margin-bottom: 4px; font-size: 14px; }
-  .arrow { color: var(--muted); font-size: 24px; }
+  .arrow { color: var(--muted); font-size: 24px; align-self: center; }
+  .actor .rank {
+    display: block; margin-top: 12px;
+    padding-top: 10px; border-top: 1px solid var(--line);
+    font-family: var(--serif); font-size: 20px;
+    color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .actor .rank span {
+    display: block; font-family: var(--sans);
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-top: 2px;
+  }
+  .actor.most { border-color: var(--accent); }
+  .actor.most .rank { color: var(--accent); }
+  .actor.least { border-color: #4a4a46; }
+  .actor .rank.tbd { color: var(--muted); font-size: 15px; }
 
-  /* SURVEY */
+  /* FLOURISH EMBED SLOT */
+  .flourish-wrap { margin-top: 48px; }
+  .flourish-caption {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px; margin-bottom: 20px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .flourish-caption h3 { margin: 0; }
+  .flourish-caption .src {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .flourish-embed {
+    position: relative;
+    min-height: 420px;
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  /* Loading state — hidden automatically once a Flourish iframe is injected */
+  .flourish-embed .loading {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px; text-align: center; padding: 32px;
+  }
+  .flourish-embed:has(iframe) .loading { display: none; }
+  .flourish-embed iframe { display: block; width: 100%; border: 0; }
+  .loading-dots { display: flex; gap: 7px; }
+  .loading-dots i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.3s ease-in-out infinite;
+  }
+  .loading-dots i:nth-child(2) { animation-delay: 0.18s; }
+  .loading-dots i:nth-child(3) { animation-delay: 0.36s; }
+  @keyframes pulse {
+    0%, 80%, 100% { opacity: 0.22; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+  .loading-text {
+    font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .loading-sub { font-size: 13px; color: #6a6a64; max-width: 380px; line-height: 1.5; }
+  @media (prefers-reduced-motion: reduce) {
+    .loading-dots i { animation: none; opacity: 0.6; }
+  }
+
+  /* SURVEY — ANIMATED RESULT BARS */
+  .findings { margin-top: 48px; }
+  .findings-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px; margin-bottom: 32px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .findings-head h3 { margin: 0; }
+  .findings-head .n {
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stat { margin-bottom: 34px; }
+  .stat-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 20px; margin-bottom: 10px;
+  }
+  .stat-label { font-size: 16px; color: var(--ink); max-width: 78%; line-height: 1.4; }
+  .stat-val {
+    font-family: var(--serif);
+    font-size: 30px; font-weight: 400;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .stat-track {
+    height: 8px;
+    background: #1f1f1d;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .stat-fill {
+    height: 100%; width: 0;
+    background: var(--accent);
+    transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stat.alt .stat-fill { background: #6c6c66; }
+  .stat.alt .stat-val { color: var(--muted); }
+  .stat-note {
+    font-size: 13px; color: var(--muted);
+    margin-top: 8px; letter-spacing: 0.02em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stat-fill { transition: none; }
+  }
+
+  /* ANALYSIS CALLOUT */
+  .analysis {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 32px;
+    margin-top: 8px;
+  }
+  .analysis h3 { color: var(--accent); margin-bottom: 16px; }
+  .analysis p { font-size: 16px; color: var(--muted); }
+  .analysis p:last-child { margin-bottom: 0; }
+  .analysis strong { color: var(--ink); font-weight: 600; }
+  .caveat {
+    border-top: 1px solid var(--line);
+    margin-top: 24px; padding-top: 20px;
+    font-size: 14px; color: var(--muted); font-style: italic;
+  }
+
+  /* SURVEY — INTERACTIVE POLL */
   .poll {
     background: var(--panel);
     padding: 40px;
@@ -268,19 +399,24 @@
     cursor: pointer;
     font-size: 15px;
     font-family: var(--sans);
-    transition: all 0.2s;
+    transition: border-color 0.2s;
     position: relative;
+    overflow: hidden;
   }
   .poll-btn:hover { border-color: var(--accent); }
-  .poll-btn.voted { border-color: var(--accent); background: rgba(217, 76, 42, 0.1); }
+  .poll-btn.voted { border-color: var(--accent); }
   .poll-bar {
     position: absolute; top: 0; left: 0; bottom: 0;
-    background: rgba(217, 76, 42, 0.15);
+    background: rgba(217, 76, 42, 0.18);
     width: 0;
-    transition: width 0.6s;
-    z-index: -1;
+    transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .poll-btn .pct { float: right; color: var(--accent); font-weight: 600; opacity: 0; transition: opacity 0.3s; }
+  .poll-btn .label { position: relative; z-index: 1; }
+  .poll-btn .pct {
+    position: relative; z-index: 1;
+    float: right; color: var(--accent); font-weight: 600;
+    opacity: 0; transition: opacity 0.3s;
+  }
   .poll.voted .pct { opacity: 1; }
 
   /* REFERENCES */
@@ -319,6 +455,7 @@
     <li><a href="#ihl">The Law</a></li>
     <li><a href="#cases">Cases</a></li>
     <li><a href="#debate">Debate</a></li>
+    <li><a href="#survey">Survey</a></li>
     <li><a href="#verdict">Verdict</a></li>
   </ul>
 </nav>
@@ -472,44 +609,177 @@
   <h2>Who answers for a machine's mistake?</h2>
   <p>This is the hardest question in the field. A LAWS misidentifies a school bus as a troop transport and strikes it. Who is criminally liable?</p>
 
+  <p>We put exactly that scenario to our respondents and asked them to rank five candidates from most to least responsible. The chain below shows their verdict.</p>
+
+  <!-- Mean rank: lower = held MORE responsible (1 = most responsible, 5 = least).
+       NB — only the government/military (2.05) and programmer (4.12) figures were
+       confirmed in the results file. Replace the "—" values below with the mean
+       ranks for manufacturer, commander and operator from your data. -->
   <div class="gap-chain">
-    <div class="actor"><strong>The Programmer</strong>Wrote the targeting code years earlier</div>
+    <div class="actor most">
+      <strong>Government / Military</strong>Ordered and deployed the system
+      <span class="rank">2.05<span>Mean rank · most blamed</span></span>
+    </div>
     <div class="arrow">→</div>
-    <div class="actor"><strong>The Manufacturer</strong>Built and sold the weapon</div>
+    <div class="actor">
+      <strong>The Commander</strong>Authorised the deployment
+      <span class="rank tbd">—<span>Mean rank</span></span>
+    </div>
     <div class="arrow">→</div>
-    <div class="actor"><strong>The Commander</strong>Authorised the deployment</div>
+    <div class="actor">
+      <strong>The Operator</strong>Pressed "engage"
+      <span class="rank tbd">—<span>Mean rank</span></span>
+    </div>
     <div class="arrow">→</div>
-    <div class="actor"><strong>The Operator</strong>Pressed "engage"</div>
+    <div class="actor">
+      <strong>The Manufacturer</strong>Built and sold the weapon
+      <span class="rank tbd">—<span>Mean rank</span></span>
+    </div>
     <div class="arrow">→</div>
-    <div class="actor" style="border-color: var(--accent);"><strong>The Machine?</strong>Cannot be tried</div>
+    <div class="actor least">
+      <strong>The Programmer</strong>Wrote the targeting code years earlier
+      <span class="rank">4.12<span>Mean rank · least blamed</span></span>
+    </div>
   </div>
-  <p style="margin-top:32px;">Every link in this chain can plausibly disclaim responsibility. Legal scholars call this the <em>accountability gap</em> — and it is, for many critics, the single decisive argument against fully autonomous weapons.</p>
+
+  <p style="margin-top:36px;">Our respondents blamed the <strong>government or military first</strong> (mean rank 2.05) and the <strong>programmer last</strong> (mean rank 4.12). That ordering is revealing. Public intuition tracks the doctrine of <em>command responsibility</em> — the idea that whoever chose to deploy a weapon owns its consequences. Crootof (2015) builds her case for regulation on precisely this instinct, arguing for strict liability on the states and commanders who field autonomous systems.</p>
+
+  <p>But the instinct and the law come apart. Command responsibility requires that the commander knew, or should have known, what the weapon would do. The defining feature of a genuinely autonomous system is that its behaviour in a novel situation is <em>not</em> reliably foreseeable — which is the exact condition that breaks the doctrine. Every link in this chain can plausibly disclaim responsibility, and the machine cannot be tried at all. This is the <em>accountability gap</em>: for Human Rights Watch (2012) it is the single decisive argument for a pre-emptive ban.</p>
+
+  <!-- ============================================================
+       INTERACTIVE RANKING INFOGRAPHIC — FLOURISH EMBED SLOT
+       ------------------------------------------------------------
+       HOW TO ADD YOUR FLOURISH CHART:
+       1. Build the ranking chart at https://flourish.studio
+          (suggested type: "Bar chart race" or "Survey / ranking")
+       2. Click Export & publish -> Publish to share and embed
+       3. Copy the "Embed in a webpage" HTML snippet
+       4. PASTE IT DIRECTLY BELOW THIS COMMENT, INSIDE the
+          flourish-embed element.
+       The "Loading Interactive Data" state hides itself automatically
+       once a Flourish iframe is present, so no other change is needed.
+       ============================================================ -->
+  <div class="flourish-wrap">
+    <div class="flourish-caption">
+      <h3>Who should be held responsible? — interactive ranking</h3>
+      <div class="src">Source · Machine Judgement survey, n = 50</div>
+    </div>
+
+    <div class="flourish-embed" id="flourishAccountability">
+      <div class="loading">
+        <div class="loading-dots"><i></i><i></i><i></i></div>
+        <div class="loading-text">Loading Interactive Data…</div>
+        <div class="loading-sub">The interactive ranking visualisation is being prepared. If it does not appear, the static chain above shows the same result.</div>
+      </div>
+
+      <!-- PASTE THE FLOURISH EMBED SCRIPT HERE -->
+
+    </div>
+  </div>
 </section>
 
 <!-- 07 SURVEY -->
 <section id="survey">
-  <div class="section-num">07 · A QUESTION FOR YOU</div>
-  <h2>Where do you stand?</h2>
-  <p>We surveyed 50 students from across the foundation programme. Add your view.</p>
+  <div class="section-num">07 · OUR PRIMARY RESEARCH</div>
+  <h2>What fifty students told us.</h2>
+  <p>We ran an anonymous survey of 50 students from across the foundation programme, asking how they felt about machines making lethal decisions and who they would hold responsible when one goes wrong. The results were more one-sided than we expected.</p>
 
+  <div class="findings">
+    <div class="findings-head">
+      <h3>Headline findings</h3>
+      <div class="n">Machine Judgement survey · n = 50</div>
+    </div>
+
+    <div class="stat" data-pct="91">
+      <div class="stat-top">
+        <div class="stat-label">Insist that someone must remain accountable when an autonomous weapon kills unlawfully</div>
+        <div class="stat-val" data-target="91">0%</div>
+      </div>
+      <div class="stat-track"><div class="stat-fill"></div></div>
+      <div class="stat-note">Accountability · Government or military held most responsible</div>
+    </div>
+
+    <div class="stat" data-pct="87">
+      <div class="stat-top">
+        <div class="stat-label">Are uncomfortable with a machine deciding to take a human life</div>
+        <div class="stat-val" data-target="87">0%</div>
+      </div>
+      <div class="stat-track"><div class="stat-fill"></div></div>
+      <div class="stat-note">Comfort level</div>
+    </div>
+
+    <div class="stat" data-pct="82">
+      <div class="stat-top">
+        <div class="stat-label">Agree that every decision to fire must require human approval</div>
+        <div class="stat-val" data-target="82">0%</div>
+      </div>
+      <div class="stat-track"><div class="stat-fill"></div></div>
+      <div class="stat-note">Human approval · "meaningful human control"</div>
+    </div>
+
+    <div class="stat" data-pct="73">
+      <div class="stat-top">
+        <div class="stat-label">Say only a human being can carry the moral weight of a life-and-death decision</div>
+        <div class="stat-val" data-target="73">0%</div>
+      </div>
+      <div class="stat-track"><div class="stat-fill"></div></div>
+      <div class="stat-note">Moral weight</div>
+    </div>
+
+    <div class="findings-head" style="margin-top:48px;">
+      <h3>Two findings that sharpen the argument</h3>
+      <div class="n">Distinction · The Libya incident</div>
+    </div>
+
+    <div class="stat alt" data-pct="84">
+      <div class="stat-top">
+        <div class="stat-label">Found the 2020 Kargu-2 incident in Libya "deeply concerning" once it was explained to them</div>
+        <div class="stat-val" data-target="84">0%</div>
+      </div>
+      <div class="stat-track"><div class="stat-fill"></div></div>
+      <div class="stat-note">See case study 04 · UN Panel of Experts, S/2021/229</div>
+    </div>
+
+    <div class="stat alt" data-pct="56">
+      <div class="stat-top">
+        <div class="stat-label">Believe a machine would be <em>worse</em> than a human soldier at telling a fighter from a civilian</div>
+        <div class="stat-val" data-target="56">0%</div>
+      </div>
+      <div class="stat-track"><div class="stat-fill"></div></div>
+      <div class="stat-note">Distinction · the narrowest margin in the survey</div>
+    </div>
+  </div>
+
+  <div class="analysis">
+    <h3>What this tells us</h3>
+    <p>The most striking number is not the highest one. <strong>91% insist someone must remain accountable</strong> — near-unanimity. Yet as section 06 shows, the law currently cannot guarantee that anyone will be. Our respondents are describing a moral requirement that the legal system, as it stands, is unable to meet. That distance between what people demand and what the law can deliver <em>is</em> the accountability gap, measured.</p>
+    <p>The second striking number is the lowest. On <strong>distinction, opinion splits almost evenly — 56%</strong> think a machine would do worse than a human soldier. Compare that to the 87% who are uncomfortable with machine killing overall. Our respondents are far more confident in their <em>moral</em> objection than in the <em>technical</em> one. This matters for our research question: Sharkey (2012) rests the case against LAWS on the technical claim, while Schmitt and Thurnher (2013) argue legality is case-by-case precisely because that technical claim may not hold forever. Our data suggests the moral objection is the more durable of the two.</p>
+    <p>Read together, the survey supports a specific position rather than a blanket one: opposition here is driven less by doubt that machines can shoot accurately than by the conviction that <strong>no one should be able to walk away from the decision</strong>.</p>
+    <div class="caveat">Limitations: n = 50, drawn from a single foundation-year cohort and self-selecting. The sample is not representative of any wider population, and respondents were given a short briefing on LAWS before answering, which may have framed their responses. The findings are indicative of informed student opinion, not generalisable public opinion.</div>
+  </div>
+
+  <div class="findings-head" style="margin-top:64px;">
+    <h3>Now add your own view</h3>
+    <div class="n">Live · exhibition visitors</div>
+  </div>
   <div class="poll" id="poll">
     <div class="poll-q">Should a machine ever be allowed to decide, without human approval, whether to kill a person?</div>
     <div class="poll-options">
       <button class="poll-btn" data-vote="never">
         <div class="poll-bar" style="--w: 64%"></div>
-        Never, under any circumstances. <span class="pct">64%</span>
+        <span class="label">Never, under any circumstances.</span> <span class="pct">64%</span>
       </button>
       <button class="poll-btn" data-vote="defensive">
         <div class="poll-bar" style="--w: 22%"></div>
-        Only for defensive systems intercepting incoming threats. <span class="pct">22%</span>
+        <span class="label">Only for defensive systems intercepting incoming threats.</span> <span class="pct">22%</span>
       </button>
       <button class="poll-btn" data-vote="regulated">
         <div class="poll-bar" style="--w: 12%"></div>
-        Yes, if heavily regulated. <span class="pct">12%</span>
+        <span class="label">Yes, if heavily regulated.</span> <span class="pct">12%</span>
       </button>
       <button class="poll-btn" data-vote="yes">
         <div class="poll-bar" style="--w: 2%"></div>
-        Yes — machines may be more accurate than humans. <span class="pct">2%</span>
+        <span class="label">Yes — machines may be more accurate than humans.</span> <span class="pct">2%</span>
       </button>
     </div>
   </div>
@@ -545,11 +815,17 @@
 <footer>
   <div class="group">A group artefact for INT0053 Current Global Issues</div>
   <div>Exeter International Foundation · 2026</div>
-  <div style="margin-top:20px; opacity:0.5;">BETA · v0.1 — placeholder text in italics. Group names, verdict, survey data and final imagery to be added.</div>
+  <div style="margin-top:20px; opacity:0.5;">v0.2 — survey data live. Still to add: group verdict (section 08), Flourish ranking embed (section 06), remaining mean ranks, group names and final imagery.</div>
 </footer>
 
 <script>
-  // Autonomy spectrum interactive
+  'use strict';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------------------------------------------------------
+     1. AUTONOMY SPECTRUM — click to reveal each level
+     --------------------------------------------------------------- */
   const steps = document.querySelectorAll('.scale-step');
   const detail = document.getElementById('scaleDetail');
   steps.forEach(s => {
@@ -560,21 +836,97 @@
     });
   });
 
-  // Poll
+  /* ---------------------------------------------------------------
+     2. SURVEY RESULTS — bars start at 0% and animate to their true
+        value only when scrolled into view, with the percentage
+        counting up alongside the bar. Each bar fires once.
+     --------------------------------------------------------------- */
+  function countUp(el, target, duration) {
+    if (reduceMotion) { el.textContent = target + '%'; return; }
+    const start = performance.now();
+    // easeOutExpo — fast start, gentle settle. Matches the bar's easing.
+    const ease = t => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+    function frame(now) {
+      const p = Math.min((now - start) / duration, 1);
+      el.textContent = Math.round(ease(p) * target) + '%';
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function revealStat(stat) {
+    const pct = parseFloat(stat.dataset.pct);
+    const fill = stat.querySelector('.stat-fill');
+    const val = stat.querySelector('.stat-val');
+    // Small stagger so a group of bars cascades rather than snapping together.
+    const delay = reduceMotion ? 0 : 80;
+    setTimeout(() => {
+      fill.style.width = pct + '%';
+      countUp(val, pct, 1400);
+    }, delay);
+  }
+
+  const stats = document.querySelectorAll('.stat');
+  if ('IntersectionObserver' in window) {
+    const statObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        revealStat(entry.target);
+        obs.unobserve(entry.target);   // animate once only
+      });
+    }, {
+      threshold: 0.45,                  // most of the bar must be visible
+      rootMargin: '0px 0px -60px 0px'   // trigger just after it enters
+    });
+    stats.forEach(s => statObserver.observe(s));
+  } else {
+    // Fallback for older browsers — show final values immediately.
+    stats.forEach(s => {
+      s.querySelector('.stat-fill').style.width = s.dataset.pct + '%';
+      s.querySelector('.stat-val').textContent = s.dataset.pct + '%';
+    });
+  }
+
+  /* ---------------------------------------------------------------
+     3. LIVE POLL — visitors vote, then see how the room answered
+     --------------------------------------------------------------- */
   const poll = document.getElementById('poll');
-  const buttons = poll.querySelectorAll('.poll-btn');
-  buttons.forEach(b => {
-    b.addEventListener('click', () => {
-      poll.classList.add('voted');
-      buttons.forEach(x => x.classList.remove('voted'));
-      b.classList.add('voted');
-      buttons.forEach(x => {
-        const bar = x.querySelector('.poll-bar');
-        const w = bar.style.getPropertyValue('--w');
-        bar.style.width = w;
+  if (poll) {
+    const buttons = poll.querySelectorAll('.poll-btn');
+    buttons.forEach(b => {
+      b.addEventListener('click', () => {
+        poll.classList.add('voted');
+        buttons.forEach(x => x.classList.remove('voted'));
+        b.classList.add('voted');
+        buttons.forEach(x => {
+          const bar = x.querySelector('.poll-bar');
+          bar.style.width = bar.style.getPropertyValue('--w');
+        });
       });
     });
-  });
+  }
+
+  /* ---------------------------------------------------------------
+     4. FLOURISH SLOT — hides the loading state once the embed
+        renders. CSS :has() handles this in modern browsers; this
+        MutationObserver is the fallback for the rest.
+     --------------------------------------------------------------- */
+  const flourishSlot = document.getElementById('flourishAccountability');
+  if (flourishSlot) {
+    const loading = flourishSlot.querySelector('.loading');
+    const checkEmbed = () => {
+      if (flourishSlot.querySelector('iframe')) {
+        if (loading) loading.style.display = 'none';
+        return true;
+      }
+      return false;
+    };
+    if (!checkEmbed()) {
+      new MutationObserver((mutations, obs) => {
+        if (checkEmbed()) obs.disconnect();
+      }).observe(flourishSlot, { childList: true, subtree: true });
+    }
+  }
 </script>
 
 </body>
