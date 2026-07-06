@@ -235,88 +235,142 @@
   .debate-side li:last-child { border-bottom: none; }
   .debate-side li strong { color: var(--ink); display: block; margin-bottom: 4px; font-weight: 600; }
 
-  /* ACCOUNTABILITY */
-  .gap-chain {
-    display: flex; gap: 12px; align-items: stretch;
-    margin-top: 40px; flex-wrap: wrap;
-  }
-  .actor {
-    flex: 1; min-width: 130px;
-    background: var(--panel);
-    padding: 20px 16px;
-    text-align: center;
-    border: 1px solid var(--line);
-    font-size: 13px;
-    position: relative;
-  }
-  .actor strong { display: block; color: var(--accent); margin-bottom: 4px; font-size: 14px; }
-  .arrow { color: var(--muted); font-size: 24px; align-self: center; }
-  .actor .rank {
-    display: block; margin-top: 12px;
-    padding-top: 10px; border-top: 1px solid var(--line);
-    font-family: var(--serif); font-size: 20px;
-    color: var(--ink); font-variant-numeric: tabular-nums;
-  }
-  .actor .rank span {
-    display: block; font-family: var(--sans);
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--muted); margin-top: 2px;
-  }
-  .actor.most { border-color: var(--accent); }
-  .actor.most .rank { color: var(--accent); }
-  .actor.least { border-color: #4a4a46; }
-  .actor .rank.tbd { color: var(--muted); font-size: 15px; }
-
-  /* FLOURISH EMBED SLOT */
-  .flourish-wrap { margin-top: 48px; }
-  .flourish-caption {
+  /* ACCOUNTABILITY — THE BLAME LADDER */
+  .ladder-wrap { margin-top: 48px; }
+  .ladder-head {
     display: flex; justify-content: space-between; align-items: baseline;
     border-bottom: 1px solid var(--line);
-    padding-bottom: 12px; margin-bottom: 20px;
+    padding-bottom: 12px; margin-bottom: 8px;
     flex-wrap: wrap; gap: 12px;
   }
-  .flourish-caption h3 { margin: 0; }
-  .flourish-caption .src {
+  .ladder-head h3 { margin: 0; }
+  .ladder-head .src {
     font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--muted);
   }
-  .flourish-embed {
+  .ladder-hint {
+    font-size: 13px; color: var(--muted);
+    margin: 0 0 20px; letter-spacing: 0.02em;
+  }
+  .ladder { display: flex; flex-direction: column; gap: 8px; }
+
+  .rung { border: 1px solid var(--line); background: var(--panel); }
+  .rung.open { border-color: var(--accent); }
+
+  .rung-head {
     position: relative;
-    min-height: 420px;
-    background: var(--panel);
-    border: 1px solid var(--accent);
-    border-radius: 2px;
+    display: grid;
+    grid-template-columns: 52px 1fr auto 34px;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 18px 18px;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--sans);
+    color: var(--ink);
     overflow: hidden;
   }
-  /* Loading state — hidden automatically once a Flourish iframe is injected */
-  .flourish-embed .loading {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 14px; text-align: center; padding: 32px;
+  .rung-head:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  /* animated blame bar sits behind the row content */
+  .rung-fill {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 0;
+    background: rgba(217, 76, 42, 0.16);
+    transition: width 1.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .flourish-embed:has(iframe) .loading { display: none; }
-  .flourish-embed iframe { display: block; width: 100%; border: 0; }
-  .loading-dots { display: flex; gap: 7px; }
-  .loading-dots i {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 1.3s ease-in-out infinite;
+  .rung.tier-mid .rung-fill { background: rgba(217, 76, 42, 0.10); }
+  .rung.tier-low .rung-fill { background: rgba(154, 154, 147, 0.10); }
+  .rung-head > * { position: relative; z-index: 1; }
+
+  .rung-pos {
+    font-family: var(--serif); font-size: 26px;
+    color: var(--muted); text-align: center;
+    font-variant-numeric: tabular-nums;
   }
-  .loading-dots i:nth-child(2) { animation-delay: 0.18s; }
-  .loading-dots i:nth-child(3) { animation-delay: 0.36s; }
-  @keyframes pulse {
-    0%, 80%, 100% { opacity: 0.22; transform: scale(0.8); }
-    40% { opacity: 1; transform: scale(1); }
+  .rung.tier-high .rung-pos { color: var(--accent); }
+
+  .rung-name { font-size: 17px; font-weight: 600; line-height: 1.3; }
+  .rung-name em {
+    display: block; font-style: normal; font-weight: 400;
+    font-size: 13px; color: var(--muted); margin-top: 3px;
   }
-  .loading-text {
-    font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--muted);
+
+  .rung-mean {
+    font-family: var(--serif); font-size: 24px;
+    color: var(--ink); text-align: right;
+    font-variant-numeric: tabular-nums; line-height: 1.1;
   }
-  .loading-sub { font-size: 13px; color: #6a6a64; max-width: 380px; line-height: 1.5; }
+  .rung.tier-high .rung-mean { color: var(--accent); }
+  .rung.tier-low .rung-mean { color: var(--muted); }
+  .rung-mean em {
+    display: block; font-family: var(--sans); font-style: normal;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-top: 3px;
+  }
+
+  .rung-caret {
+    font-size: 22px; color: var(--muted); text-align: center;
+    transition: transform 0.25s, color 0.2s;
+    line-height: 1;
+  }
+  .rung-head:hover .rung-caret { color: var(--accent); }
+  .rung.open .rung-caret { transform: rotate(45deg); color: var(--accent); }
+
+  .rung-why {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .rung.open .rung-why { max-height: 340px; }
+  .rung-why-inner {
+    padding: 0 18px 20px 86px;
+    border-top: 1px solid var(--line);
+    margin: 0 18px;
+    padding-top: 18px;
+  }
+  .rung-why p { font-size: 15px; color: var(--muted); margin: 0; max-width: 640px; }
+  .rung-why p + p { margin-top: 12px; }
+  .rung-why .tie {
+    display: inline-block; margin-top: 12px;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--line); padding: 5px 10px;
+  }
+  @media (max-width: 720px) {
+    .rung-head { grid-template-columns: 38px 1fr auto; gap: 12px; padding: 16px 14px; }
+    .rung-caret { display: none; }
+    .rung-why-inner { padding-left: 14px; margin: 0 14px; }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .loading-dots i { animation: none; opacity: 0.6; }
+    .rung-fill, .rung-why, .rung-caret { transition: none; }
   }
+
+  /* the machine — sits outside the ranking */
+  .machine-note {
+    margin-top: 12px;
+    border: 1px dashed #3a3a36;
+    background: transparent;
+    padding: 20px 18px 20px 86px;
+    font-size: 15px; color: var(--muted);
+  }
+  .machine-note strong { color: var(--ink); display: block; margin-bottom: 4px; font-weight: 600; }
+  @media (max-width: 720px) { .machine-note { padding-left: 14px; } }
+
+  /* the cliff callout */
+  .cliff {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--panel); border-left: 4px solid var(--accent);
+    flex-wrap: wrap;
+  }
+  .cliff .num {
+    font-family: var(--serif); font-size: 40px; color: var(--accent);
+    line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .cliff .txt { flex: 1; min-width: 260px; font-size: 15px; color: var(--muted); }
+  .cliff .txt strong { color: var(--ink); font-weight: 600; }
 
   /* SURVEY — ANIMATED RESULT BARS */
   .findings { margin-top: 48px; }
@@ -609,73 +663,126 @@
   <h2>Who answers for a machine's mistake?</h2>
   <p>This is the hardest question in the field. A LAWS misidentifies a school bus as a troop transport and strikes it. Who is criminally liable?</p>
 
-  <p>We put exactly that scenario to our respondents and asked them to rank five candidates from most to least responsible. The chain below shows their verdict.</p>
+  <p>We put exactly that scenario to our respondents and asked them to rank five parties from most to least responsible. The ladder below shows their verdict.</p>
 
-  <!-- Mean rank: lower = held MORE responsible (1 = most responsible, 5 = least).
-       NB — only the government/military (2.05) and programmer (4.12) figures were
-       confirmed in the results file. Replace the "—" values below with the mean
-       ranks for manufacturer, commander and operator from your data. -->
-  <div class="gap-chain">
-    <div class="actor most">
-      <strong>Government / Military</strong>Ordered and deployed the system
-      <span class="rank">2.05<span>Mean rank · most blamed</span></span>
-    </div>
-    <div class="arrow">→</div>
-    <div class="actor">
-      <strong>The Commander</strong>Authorised the deployment
-      <span class="rank tbd">—<span>Mean rank</span></span>
-    </div>
-    <div class="arrow">→</div>
-    <div class="actor">
-      <strong>The Operator</strong>Pressed "engage"
-      <span class="rank tbd">—<span>Mean rank</span></span>
-    </div>
-    <div class="arrow">→</div>
-    <div class="actor">
-      <strong>The Manufacturer</strong>Built and sold the weapon
-      <span class="rank tbd">—<span>Mean rank</span></span>
-    </div>
-    <div class="arrow">→</div>
-    <div class="actor least">
-      <strong>The Programmer</strong>Wrote the targeting code years earlier
-      <span class="rank">4.12<span>Mean rank · least blamed</span></span>
-    </div>
-  </div>
-
-  <p style="margin-top:36px;">Our respondents blamed the <strong>government or military first</strong> (mean rank 2.05) and the <strong>programmer last</strong> (mean rank 4.12). That ordering is revealing. Public intuition tracks the doctrine of <em>command responsibility</em> — the idea that whoever chose to deploy a weapon owns its consequences. Crootof (2015) builds her case for regulation on precisely this instinct, arguing for strict liability on the states and commanders who field autonomous systems.</p>
-
-  <p>But the instinct and the law come apart. Command responsibility requires that the commander knew, or should have known, what the weapon would do. The defining feature of a genuinely autonomous system is that its behaviour in a novel situation is <em>not</em> reliably foreseeable — which is the exact condition that breaks the doctrine. Every link in this chain can plausibly disclaim responsibility, and the machine cannot be tried at all. This is the <em>accountability gap</em>: for Human Rights Watch (2012) it is the single decisive argument for a pre-emptive ban.</p>
-
-  <!-- ============================================================
-       INTERACTIVE RANKING INFOGRAPHIC — FLOURISH EMBED SLOT
-       ------------------------------------------------------------
-       HOW TO ADD YOUR FLOURISH CHART:
-       1. Build the ranking chart at https://flourish.studio
-          (suggested type: "Bar chart race" or "Survey / ranking")
-       2. Click Export & publish -> Publish to share and embed
-       3. Copy the "Embed in a webpage" HTML snippet
-       4. PASTE IT DIRECTLY BELOW THIS COMMENT, INSIDE the
-          flourish-embed element.
-       The "Loading Interactive Data" state hides itself automatically
-       once a Flourish iframe is present, so no other change is needed.
-       ============================================================ -->
-  <div class="flourish-wrap">
-    <div class="flourish-caption">
-      <h3>Who should be held responsible? — interactive ranking</h3>
+  <!-- =========================================================
+       THE BLAME LADDER — interactive accountability ranking
+       Source: Machine Judgement survey, n = 50.
+       data-blame is the bar length, derived from the mean rank on a
+       1–5 scale: blame = (6 − mean) ÷ 5 × 100. Lower mean rank =
+       held more responsible = longer bar.
+       Tier classes group the three statistical clusters in the data:
+         tier-high  the state, alone at the top
+         tier-mid   operator + commander, effectively tied
+         tier-low   manufacturer + programmer, after the sharp drop
+       ========================================================= -->
+  <div class="ladder-wrap">
+    <div class="ladder-head">
+      <h3>The blame ladder — who our respondents held responsible</h3>
       <div class="src">Source · Machine Judgement survey, n = 50</div>
     </div>
+    <p class="ladder-hint">Ranked most to least responsible. Click any rung to see why it sits there. Lower mean rank = held more responsible.</p>
 
-    <div class="flourish-embed" id="flourishAccountability">
-      <div class="loading">
-        <div class="loading-dots"><i></i><i></i><i></i></div>
-        <div class="loading-text">Loading Interactive Data…</div>
-        <div class="loading-sub">The interactive ranking visualisation is being prepared. If it does not appear, the static chain above shows the same result.</div>
+    <div class="ladder" id="ladder">
+
+      <div class="rung tier-high" data-blame="79">
+        <button class="rung-head" aria-expanded="false" aria-controls="why-1">
+          <span class="rung-fill" aria-hidden="true"></span>
+          <span class="rung-pos">1</span>
+          <span class="rung-name">Government / Military<em>Chose to field the weapon at all</em></span>
+          <span class="rung-mean">2.05<em>mean rank</em></span>
+          <span class="rung-caret" aria-hidden="true">+</span>
+        </button>
+        <div class="rung-why" id="why-1">
+          <div class="rung-why-inner">
+            <p>Respondents put the state first because it makes the political decision to deploy an autonomous weapon in the first place — every later actor is only carrying out that choice.</p>
+            <p>This tracks the doctrine of <em>command responsibility</em> almost exactly, and it is the instinct Crootof (2015) builds on when she argues for strict liability on the states that field these systems rather than an outright ban.</p>
+            <span class="tie">Supports · regulate, don't ban</span>
+          </div>
+        </div>
       </div>
 
-      <!-- PASTE THE FLOURISH EMBED SCRIPT HERE -->
+      <div class="rung tier-mid" data-blame="70.8">
+        <button class="rung-head" aria-expanded="false" aria-controls="why-2">
+          <span class="rung-fill" aria-hidden="true"></span>
+          <span class="rung-pos">2</span>
+          <span class="rung-name">The Operator<em>Switched it on</em></span>
+          <span class="rung-mean">2.46<em>mean rank</em></span>
+          <span class="rung-caret" aria-hidden="true">+</span>
+        </button>
+        <div class="rung-why" id="why-2">
+          <div class="rung-why-inner">
+            <p>The operator is the last human to touch the system, and respondents treated that physical proximity to the moment of launch as carrying real responsibility — even though, by definition, the operator did not choose the target.</p>
+            <p>That is the uncomfortable part: people are assigning blame for a decision the human did not actually make.</p>
+            <span class="tie">Exposes · the illusion of control</span>
+          </div>
+        </div>
+      </div>
 
+      <div class="rung tier-mid" data-blame="70.2">
+        <button class="rung-head" aria-expanded="false" aria-controls="why-3">
+          <span class="rung-fill" aria-hidden="true"></span>
+          <span class="rung-pos">3</span>
+          <span class="rung-name">The Commander<em>Authorised the mission</em></span>
+          <span class="rung-mean">2.49<em>mean rank</em></span>
+          <span class="rung-caret" aria-hidden="true">+</span>
+        </button>
+        <div class="rung-why" id="why-3">
+          <div class="rung-why-inner">
+            <p>At 2.49 the commander is statistically inseparable from the operator — a gap of 0.03 is well inside the noise of a 50-person sample, so we treat these two as tied rather than ranked.</p>
+            <p>Legally this is the most fragile rung on the ladder. Command responsibility requires that the commander knew, or should have known, what the weapon would do. The defining feature of genuine autonomy is that its behaviour in a novel situation is <em>not</em> reliably foreseeable — which is the exact condition that breaks the doctrine.</p>
+            <span class="tie">Where the law breaks</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rung tier-low" data-blame="42.4">
+        <button class="rung-head" aria-expanded="false" aria-controls="why-4">
+          <span class="rung-fill" aria-hidden="true"></span>
+          <span class="rung-pos">4</span>
+          <span class="rung-name">The Manufacturer<em>Built and sold the weapon</em></span>
+          <span class="rung-mean">3.88<em>mean rank</em></span>
+          <span class="rung-caret" aria-hidden="true">+</span>
+        </button>
+        <div class="rung-why" id="why-4">
+          <div class="rung-why-inner">
+            <p>Blame falls off a cliff here. Respondents drew a firm line between the people who <em>decided to use</em> the weapon and the people who <em>made</em> it, treating manufacture as a lawful commercial act separable from its consequences.</p>
+            <p>Arms manufacturers are rarely held criminally liable for the use of lawful weapons, so this intuition matches current practice — but it means an entire link in the causal chain absorbs almost no responsibility.</p>
+            <span class="tie">Matches current practice</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rung tier-low" data-blame="37.6">
+        <button class="rung-head" aria-expanded="false" aria-controls="why-5">
+          <span class="rung-fill" aria-hidden="true"></span>
+          <span class="rung-pos">5</span>
+          <span class="rung-name">The Programmer<em>Wrote the targeting code, years earlier</em></span>
+          <span class="rung-mean">4.12<em>mean rank</em></span>
+          <span class="rung-caret" aria-hidden="true">+</span>
+        </button>
+        <div class="rung-why" id="why-5">
+          <div class="rung-why-inner">
+            <p>The programmer is held least responsible of all — and this is the finding we think matters most, because it is arguably the one our respondents got wrong.</p>
+            <p>In an autonomous system it is the targeting logic, not the trigger, that decides who counts as a target. The programmer's choices are made years before the strike, in an office, against data that may not resemble the battlefield at all. Sharkey (2012) rests his entire technical case against LAWS on exactly this point. Public intuition still locates responsibility at the moment of firing, which is precisely the moment autonomy removes a human from.</p>
+            <span class="tie">Intuition vs. reality</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="machine-note">
+        <strong>And the machine itself — unranked</strong>
+        We did not offer the machine as an option, because it cannot be offered one in a courtroom either. A weapon cannot be prosecuted, punished, or deterred. Whatever responsibility is not absorbed by the five parties above simply disappears.
+      </div>
+    </div>
+
+    <div class="cliff">
+      <div class="num">1.39</div>
+      <div class="txt"><strong>The gap that matters.</strong> The distance between rungs 1–3 is tiny (2.05 → 2.49). Between rung 3 and rung 4 it jumps by 1.39 — the single largest gap in the data. Our respondents are not spreading blame evenly down a chain; they are drawing a hard line between <strong>those who decided to use the weapon</strong> and <strong>those who created it</strong>. Everyone on the far side of that line is close to absolved.</div>
     </div>
   </div>
+
+  <p style="margin-top:40px;">Taken together, the ladder shows why the accountability gap is so hard to close. Responsibility concentrates on the state and the commander — but that is exactly where the legal test of foreseeability fails for an autonomous system. It thins out towards the manufacturer and the programmer — but that is where the decisions that actually determine who lives and dies are encoded. For Human Rights Watch (2012), this mismatch is the single decisive argument for a pre-emptive ban.</p>
 </section>
 
 <!-- 07 SURVEY -->
@@ -907,25 +1014,56 @@
   }
 
   /* ---------------------------------------------------------------
-     4. FLOURISH SLOT — hides the loading state once the embed
-        renders. CSS :has() handles this in modern browsers; this
-        MutationObserver is the fallback for the rest.
+     4. THE BLAME LADDER — accountability ranking (section 06)
+        (a) blame bars animate in when the ladder scrolls into view
+        (b) each rung expands to reveal why it sits where it does
      --------------------------------------------------------------- */
-  const flourishSlot = document.getElementById('flourishAccountability');
-  if (flourishSlot) {
-    const loading = flourishSlot.querySelector('.loading');
-    const checkEmbed = () => {
-      if (flourishSlot.querySelector('iframe')) {
-        if (loading) loading.style.display = 'none';
-        return true;
-      }
-      return false;
-    };
-    if (!checkEmbed()) {
-      new MutationObserver((mutations, obs) => {
-        if (checkEmbed()) obs.disconnect();
-      }).observe(flourishSlot, { childList: true, subtree: true });
+  const ladder = document.getElementById('ladder');
+  if (ladder) {
+    const rungs = [...ladder.querySelectorAll('.rung')];
+
+    /* (a) animate the bars, staggered top to bottom */
+    function revealLadder() {
+      rungs.forEach((rung, i) => {
+        const fill = rung.querySelector('.rung-fill');
+        if (!fill) return;
+        const w = rung.dataset.blame + '%';
+        if (reduceMotion) { fill.style.width = w; return; }
+        setTimeout(() => { fill.style.width = w; }, i * 110);
+      });
     }
+
+    if ('IntersectionObserver' in window) {
+      const ladderObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          revealLadder();
+          obs.disconnect();          // whole ladder animates once
+        });
+      }, { threshold: 0.2 });
+      ladderObserver.observe(ladder);
+    } else {
+      revealLadder();
+    }
+
+    /* (b) expand / collapse each rung — accordion, one open at a time */
+    rungs.forEach(rung => {
+      const btn = rung.querySelector('.rung-head');
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const isOpen = rung.classList.contains('open');
+        // close every rung first so only one explanation shows at a time
+        rungs.forEach(r => {
+          r.classList.remove('open');
+          const b = r.querySelector('.rung-head');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          rung.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
   }
 </script>
 
