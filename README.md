@@ -52,6 +52,10 @@ git checkout main                    # back to the finished version
 
 Each tag is a complete, working version of the site.
 
+> The history was reconstructed retrospectively and committed in one
+> session. The stages and their order are accurate; the timestamps were
+> assigned at creation. See the note at the top of `DEVELOPMENT_LOG.md`.
+
 ---
 
 ## Site structure

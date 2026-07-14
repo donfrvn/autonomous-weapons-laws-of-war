@@ -5,6 +5,18 @@ Yazan Anzharini · Ifran Zargar · Abdullah Farid
 
 ---
 
+> **A note on this repository.** The git history here was reconstructed
+> retrospectively from our working files and group notes, and committed in
+> a single session once the artefact was substantially complete. The five
+> stages, and the order they appear in, are an accurate record of how the
+> site actually developed — including the approaches we abandoned. The
+> commit *timestamps*, however, were assigned when the repository was
+> created to reflect the project timeline; they are not a minute-by-minute
+> log of when each keystroke happened. We have recorded this openly rather
+> than present a tidied history as something it is not.
+
+---
+
 ## Why this log exists
 
 The finished website shows *what* we built. It does not show *how* we got
