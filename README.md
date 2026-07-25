@@ -12,11 +12,7 @@ Companion website artefact for **INT0053 Current Global Issues**.
 
 ## Running it
 
-Open `index.html` in any modern browser. That is the whole instruction.
-
-There is no build step, no package manager and no internet dependency —
-deliberately, so the artefact runs from a USB stick at the exhibition even
-if the wifi fails.
+Open `index.html` in any modern browser. 
 
 ---
 
