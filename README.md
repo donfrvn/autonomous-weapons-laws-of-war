@@ -94,6 +94,8 @@ embeds. Everything the page needs is in the file.
 
 ## Known issues
 
-See the *Known issues outstanding* section of `DEVELOPMENT_LOG.md`. The
-most important one: the verdict cites 45 respondents while the rest of the
-site cites n = 50. This needs reconciling before submission.
+See the *Known issues outstanding* section of `DEVELOPMENT_LOG.md`.
+
+The sample-size inconsistency has been resolved: **n = 45** (completed
+responses) throughout. Remaining items are group member names and final
+imagery.

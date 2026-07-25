@@ -95,7 +95,7 @@ and the legal framing from the title alone.
 ## Stage 3 — Primary research integrated
 `tag v0.3` · *integrate primary research; add animated data reveal*
 
-The survey of 50 foundation-programme students was complete. Placeholder
+The survey of foundation-programme students was complete, with 45 completed responses. Placeholder
 numbers came out, real findings went in, and the section was rebuilt around
 them.
 
@@ -123,7 +123,7 @@ empirically; and that the near-even 56% split on distinction shows our
 respondents hold the moral objection more firmly than the technical one —
 which bears directly on Sharkey (2012) versus Schmitt & Thurnher (2013).
 
-We also wrote an explicit limitations note: n = 50, a single cohort,
+We also wrote an explicit limitations note: n = 45, a single cohort,
 self-selecting, and briefed before answering, therefore not generalisable.
 It is better to state the weakness than to have a marker find it.
 
@@ -176,7 +176,7 @@ A bespoke **blame ladder** in plain HTML, CSS and JavaScript:
 - **Tier colouring follows the actual clustering in the data**, not a
   decorative gradient: the state alone at the top, operator and commander
   effectively tied, then manufacturer and programmer after the drop.
-- Operator (2.46) and commander (2.49) are **0.03 apart**. At n = 50 that
+- Operator (2.46) and commander (2.49) are **0.03 apart**. At n = 45 that
   is noise, so we wrote them up as tied rather than pretending rank 2 beat
   rank 3.
 - A callout marks the **1.39 jump** between rung 3 and rung 4 — the largest
@@ -261,9 +261,10 @@ message claims.
 
 ## Known issues outstanding
 
-1. **Sample size is inconsistent.** The verdict cites *45 respondents*
-   while the findings section and the ladder cite *n = 50*. This must be
-   reconciled before submission.
+1. ~~Sample size is inconsistent.~~ **RESOLVED (stage 6).** The verdict
+   cited *45 respondents* while the findings section and ladder cited
+   *n = 50*. 45 is correct — it is the number of completed responses.
+   Corrected sitewide.
 2. **Two verdict statistics are unsupported on the page** — 89% wanting
    regulation or a ban, and 20% confidence in governments — and would be
    stronger presented as bars in section 07.
