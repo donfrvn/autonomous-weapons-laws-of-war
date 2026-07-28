@@ -452,6 +452,102 @@
     font-size: 14px; color: var(--muted); font-style: italic;
   }
 
+  /* THE FILM — click-to-play façade */
+  .film-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: 40px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .film-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  /* the façade — replaced by the iframe on click */
+  .film-facade {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    padding: 0; margin: 0;
+    background: var(--panel);
+    border: 0;
+    cursor: pointer;
+    display: block;
+    font-family: var(--sans);
+    color: var(--ink);
+  }
+  .film-facade:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+  .film-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    transition: opacity 0.35s, transform 0.6s;
+  }
+  .film-facade:hover .film-poster { opacity: 0.62; transform: scale(1.02); }
+  /* dark wash so the play control and title stay legible over any frame */
+  .film-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(14,14,14,0.35) 0%,
+      rgba(14,14,14,0.15) 40%,
+      rgba(14,14,14,0.85) 100%);
+  }
+  .film-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+    box-shadow: 0 0 0 0 rgba(217, 76, 42, 0.45);
+  }
+  .film-facade:hover .film-play {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 0 0 14px rgba(217, 76, 42, 0.14);
+  }
+  .film-play::after {
+    content: "";
+    margin-left: 6px;
+    border-style: solid;
+    border-width: 15px 0 15px 25px;
+    border-color: transparent transparent transparent #fff;
+  }
+  .film-caption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 28px 32px;
+    text-align: left;
+  }
+  .film-caption .tag {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .film-caption .name {
+    font-family: var(--serif); font-size: clamp(20px, 2.6vw, 30px);
+    line-height: 1.2; color: var(--ink);
+  }
+  .film-caption .run {
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-top: 8px;
+  }
+  @media (max-width: 720px) {
+    .film-play { width: 60px; height: 60px; }
+    .film-play::after { border-width: 11px 0 11px 18px; margin-left: 4px; }
+    .film-caption { padding: 18px 20px; }
+  }
+  .film-note {
+    display: flex; justify-content: space-between; gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    font-size: 13px; color: var(--muted);
+  }
+  .film-note a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .film-note a:hover { border-bottom-color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) {
+    .film-poster, .film-play { transition: none; }
+  }
+
   /* REFERENCES */
   .refs {
     background: var(--panel);
@@ -483,6 +579,7 @@
 <nav>
   <div class="logo">AUTONOMOUS WEAPONS</div>
   <ul>
+    <li><a href="#film">Film</a></li>
     <li><a href="#question">Question</a></li>
     <li><a href="#laws">LAWS</a></li>
     <li><a href="#ihl">The Law</a></li>
@@ -505,6 +602,41 @@
   </div>
   <div class="scroll-hint">SCROLL ↓</div>
 </header>
+
+<!-- 00 THE FILM -->
+<!-- =========================================================
+     Click-to-play façade. The YouTube iframe is NOT in the markup:
+     it is injected on click. A bare embed pulls ~1MB of Google
+     scripts and sets tracking cookies on every visitor, including
+     those who never press play. This loads one thumbnail instead,
+     and uses youtube-nocookie.com when it does load.
+     ========================================================= -->
+<section id="film">
+  <div class="section-num">THE DOCUMENTARY</div>
+  <h2>Watch the film.</h2>
+  <p>The written investigation below expands on the documentary. Start here, or read on and come back.</p>
+
+  <div class="film-frame" id="filmFrame">
+    <button class="film-facade" id="filmPlay"
+            aria-label="Play the documentary: Autonomous Weapons and the Laws of War">
+      <img class="film-poster" alt=""
+           src="https://i.ytimg.com/vi/ue3dcCLzCpI/maxresdefault.jpg"
+           onerror="this.style.display='none'">
+      <span class="film-scrim"></span>
+      <span class="film-play" aria-hidden="true"></span>
+      <span class="film-caption">
+        <span class="tag">Group documentary</span>
+        <span class="name">Autonomous Weapons and the Laws of War</span>
+        <span class="run">INT0053 · Current Global Issues</span>
+      </span>
+    </button>
+  </div>
+
+  <div class="film-note">
+    <span>Loads from YouTube only when you press play — no tracking before then.</span>
+    <span><a href="https://www.youtube.com/watch?v=ue3dcCLzCpI" target="_blank" rel="noopener">Watch on YouTube ↗</a></span>
+  </div>
+</section>
 
 <!-- 01 QUESTION -->
 <section id="question">
@@ -901,6 +1033,27 @@
       detail.textContent = s.dataset.detail;
     });
   });
+
+  /* ---------------------------------------------------------------
+     1b. THE FILM — swap the façade for the real player on click.
+         Nothing from YouTube is requested until this fires, so
+         visitors who never press play are never tracked.
+     --------------------------------------------------------------- */
+  const filmBtn = document.getElementById('filmPlay');
+  if (filmBtn) {
+    filmBtn.addEventListener('click', () => {
+      const frame = document.getElementById('filmFrame');
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/ue3dcCLzCpI'
+                 + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+      iframe.title = 'Autonomous Weapons and the Laws of War — group documentary';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      frame.innerHTML = '';
+      frame.appendChild(iframe);
+      iframe.focus();
+    });
+  }
 
   /* ---------------------------------------------------------------
      2. SURVEY RESULTS — bars start at 0% and animate to their true
