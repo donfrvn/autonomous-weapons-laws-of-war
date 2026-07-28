@@ -240,6 +240,56 @@ the deliberate lede in section 01.
 
 ---
 
+## Stage 7 — The documentary goes in
+`tag v1.2` · *add the documentary to the site as a click-to-play embed*
+
+The film was finished, uploaded to YouTube, and is now embedded in the
+site. It sits in its own section between the hero and section 01, so a
+visitor meets the research question first, can watch the film, and then
+read the written investigation that expands on it.
+
+### Why not a plain YouTube iframe
+
+A standard embed has two problems for this artefact. It loads roughly 1 MB
+of Google scripts and sets tracking cookies on **every** visitor who opens
+the page, including the majority who never press play — which is a
+privacy cost imposed on readers who did not ask for it. And it renders as
+a bright, YouTube-branded box in the middle of a dark editorial layout,
+breaking the design.
+
+### What we built instead
+
+A **click-to-play façade**. The visitor sees a poster frame styled to
+match the site: the video's thumbnail darkened by a gradient scrim, our
+own accent-coloured play control, and a title card. No request is made to
+YouTube at all until the visitor clicks. Only then does JavaScript inject
+the player, pointing at `youtube-nocookie.com` with `rel=0` so the film
+does not end by recommending unrelated channels.
+
+The façade is a real `<button>` with an `aria-label`, so it is reachable
+and operable by keyboard and announced correctly by screen readers. The
+poster image carries an empty `alt` because the button already provides
+the accessible name, and the injected iframe gets its own `title`.
+
+### The honest limitation
+
+This is the one part of the artefact that requires an internet connection
+— the same dependency we rejected Flourish over in stage 4. We are
+recording that inconsistency rather than hiding it. The difference in kind
+is that the film is *content* rather than *analysis*: if it fails to load,
+the argument on the page is still complete, whereas a failed Flourish
+embed would have left a hole where our accountability findings should be.
+
+Two mitigations are in place. The poster image removes itself if it fails
+to load, so the block degrades to a styled panel carrying the film's title
+rather than a broken image icon. And a direct YouTube link sits beneath
+the player.
+
+A local-file fallback should still be added before the exhibition so the
+film plays from the USB copy with no connection at all.
+
+---
+
 ## Testing approach
 
 Each stage was verified programmatically rather than by eye. The page's
@@ -251,11 +301,13 @@ real JavaScript was executed in a headless DOM with a stubbed
 - the accordion opens, closes, and keeps only one panel open;
 - `aria-expanded` and `aria-controls` stay correctly wired;
 - bar lengths match the stated formula to within 0.15;
+- the film section ships with **zero** iframes and no YouTube URL in the
+  markup, then injects exactly one `youtube-nocookie.com` player on click;
 - and no regression breaks the autonomy spectrum or the reference list.
 
-Every one of the five stages was re-tested after reconstruction to confirm
-it parses, runs without JavaScript errors, and behaves as its commit
-message claims.
+Every one of the five reconstructed stages was re-tested to confirm it
+parses, runs without JavaScript errors, and behaves as its commit message
+claims. Each later change was tested the same way before being committed.
 
 ---
 
@@ -268,7 +320,10 @@ message claims.
 2. **Two verdict statistics are unsupported on the page** — 89% wanting
    regulation or a ban, and 20% confidence in governments — and would be
    stronger presented as bars in section 07.
-3. Group member names and final imagery still to be added.
+3. **The film needs an internet connection.** Added in stage 7. A
+   local-file fallback should be wired in before the exhibition so the
+   documentary plays from the USB copy if the venue wifi fails.
+4. Group member names and final imagery still to be added.
 
 ---
 
@@ -276,7 +331,8 @@ message claims.
 
 | Criterion | Where the evidence is |
 |---|---|
-| Evidence of development | Five commits, each a working version; `git diff` between any two tags shows exactly what changed |
-| Very effective analysis and evaluation | Stage 4's rejection of Flourish with stated reasons; the 1.39 gap analysis; the rung 5 self-critique; the stage 3 limitations note |
-| Highly sophisticated use of digital technology | `IntersectionObserver` scroll-triggered reveals, `requestAnimationFrame` count-up easing, a bespoke accessible accordion, derived data visualisation, reduced-motion and legacy-browser fallbacks |
-| Professional standard | Semantic HTML, ARIA wiring, keyboard operability, no external dependencies, programmatic regression testing, documented known issues |
+| Evidence of development | A tagged commit per stage, each a working version; `git diff` between any two tags shows exactly what changed and the message explains why |
+| Very effective analysis and evaluation | Stage 4's rejection of Flourish with stated reasons; the 1.39 gap analysis; the rung 5 self-critique; the stage 3 limitations note; stage 7 weighing the privacy and offline cost of an embed against its benefit |
+| Highly sophisticated use of digital technology | `IntersectionObserver` scroll-triggered reveals, `requestAnimationFrame` count-up easing, a bespoke accessible accordion, derived data visualisation, a privacy-preserving click-to-play video façade, reduced-motion and legacy-browser fallbacks |
+| Professional standard | Semantic HTML, ARIA wiring, keyboard operability, minimal external dependencies, programmatic regression testing, openly documented known issues |
+| Multi-format artefact | The documentary and the written investigation are integrated into a single piece rather than presented as two separate submissions |

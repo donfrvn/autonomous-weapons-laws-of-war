@@ -35,6 +35,8 @@ Open `index.html` in any modern browser.
 | `v0.3` | 3 | Primary research integrated; scroll-animated data reveals |
 | `v0.4` | 4 | Flourish embed rejected; accountability ladder built in-house |
 | `v1.0` | 5 | QA pass — layout bug fixed, verdict written, scope trimmed |
+| `v1.1` | 6 | Sample size corrected to n = 45 sitewide |
+| `v1.2` | 7 | Documentary embedded as a click-to-play façade |
 
 Inspect any stage:
 
@@ -56,6 +58,7 @@ Each tag is a complete, working version of the site.
 
 ## Site structure
 
+0. The documentary — the group film, click-to-play
 1. The question — research question and framing
 2. Definition — what an autonomous weapon is, with an interactive autonomy spectrum
 3. The law — the four IHL principles
@@ -83,8 +86,17 @@ using `blame = (6 − mean) ÷ 5 × 100`, not set by hand. Rungs are real
 `<button>` elements with `aria-expanded` and `aria-controls`, so the
 component is fully keyboard and screen-reader operable.
 
-**No external assets.** No CDN, no web fonts, no analytics, no third-party
-embeds. Everything the page needs is in the file.
+**The documentary embed.** The film is loaded as a click-to-play façade
+rather than a standard iframe. Nothing is requested from YouTube until the
+visitor presses play — a plain embed would load ~1 MB of Google scripts
+and set tracking cookies on every reader, including those who never watch.
+On click, JavaScript injects a `youtube-nocookie.com` player with `rel=0`.
+The façade is a real `<button>` with an `aria-label`, so it works by
+keyboard and screen reader.
+
+**No other external assets.** No CDN, no web fonts, no analytics, no other
+third-party embeds. Apart from the film, everything the page needs is in
+the file — so the rest of the site works fully offline.
 
 ---
 
@@ -93,5 +105,9 @@ embeds. Everything the page needs is in the file.
 See the *Known issues outstanding* section of `DEVELOPMENT_LOG.md`.
 
 The sample-size inconsistency has been resolved: **n = 45** (completed
-responses) throughout. Remaining items are group member names and final
-imagery.
+responses) throughout.
+
+The most important remaining item: **the documentary requires an internet
+connection.** A local-file fallback should be wired in before the
+exhibition so the film plays from the USB copy if the venue wifi fails.
+Group member names and final imagery are also still to be added.
